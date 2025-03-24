@@ -1,10 +1,11 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
+import { useToken } from "../hooks/useAuth";
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -23,7 +24,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Nunito: require('../assets/fonts/Nunito-VariableFont_wght.ttf'),
     ...FontAwesome.font,
   });
 
@@ -47,13 +48,39 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
+  const { token, isLoading } = useToken(); // Теперь следим за `isLoading`
+
+  useEffect(() => {
+    console.log({ token });
+
+    if (!isLoading) {
+      if (!token) {
+        router.replace('/Auth/CheckPhone');
+      }
+    }
+  }, [isLoading, token]);
+
+  if (isLoading) {
+    return null; // Не рендерим ничего, пока загружается токен
+  }
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="Auth/Login" options={{ headerShown: false }} />
+        <Stack.Screen name="Auth/CheckPhone" options={{ headerShown: false }} />
+        <Stack.Screen name="Auth/Otp" options={{ headerShown: false }} />
+        <Stack.Screen name="Auth/Password" options={{ headerShown: false }} />
+        <Stack.Screen name="Auth/NewPassword" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/PaymentHistory" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/MyProducts" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/Payment" options={{ headerShown: false }} />
+
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
     </ThemeProvider>
   );
 }
+
