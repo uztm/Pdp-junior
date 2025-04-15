@@ -26,9 +26,13 @@ export const getUserInfo = async (token: any, id: any) => {
 
 
     try {
-        const response = await api.get(`/api/education/v1/junior-app/info-student/${id}/`);
+        const response = await api.get(`/api/education/v1/junior-app/info-student/${id}`);
+        console.log(response);
+        
         return response.data;
     } catch (error) {
+        console.log(error);
+        
         console.log({ error });
     }
 }
@@ -40,7 +44,7 @@ export const getPaymentHistory = async (token: any, id: any) => {
     setAuthHeader(token);
     // console.log(api.defaults.headers.common); // Проверяем заголовки
     try {
-        const response = await api.get(`/api/education/v1/junior-app/payment-history/${id}/`);
+        const response = await api.get(`/api/education/v1/junior-app/payment-history/${id}`);
         return response.data;
     } catch (error) {
         console.log({ error });
@@ -76,7 +80,7 @@ export const getPatment = async (token: any, id: any) => {
 export const getMyGifts = async (token: any, id: any) => {
     setAuthHeader(token);
     try {
-        const response = await api.get(`/api/education/v1/student-coin-exchange/get-all-by-student-id/${id}/`);
+        const response = await api.get(`/api/education/v1/student-coin-exchange/get-all-by-student-id/${id}`);
         return response.data;
     } catch (e) {
         console.log({ e });
@@ -126,6 +130,8 @@ export const Otp = async (phoneNumber: any, smsCodeId: any, sms: any) => {
 
         return response.data;
     } catch (e) {
+        // console.log({});
+        
         console.log({ e });
 
     }

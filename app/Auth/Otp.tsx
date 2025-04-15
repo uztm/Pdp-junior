@@ -59,6 +59,8 @@ const OTPScreen = () => {
     };
 
     useEffect(() => {
+        console.log({smsId});
+        
         if (inputRefs.current[activeIndex]) {
             inputRefs.current[activeIndex]?.focus();
         }
